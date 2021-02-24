@@ -12,8 +12,8 @@ const Home = () => {
   if (!products) return <div>....loading</div>;
   return (
     <div>
-      {products.map((products) => (
-        <h1>{products.title}</h1>
+      {products.map((product) => (
+        <h1>{product.title}</h1>
       ))}
     </div>
   );
