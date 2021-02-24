@@ -18,30 +18,72 @@ export class ShopProvider extends Component {
     isMenuOpen: false,
   };
 
-  createCheckOut = async () => {};
+  componentDidMount() {
+    //this is to prevent loosing cart after every refresh
+    if (localStorage.checkout_id) {
+      this.fetchCheckOut(localStorage.checkout_id);
+    } else {
+      this.createCheckOut();
+    }
+  }
 
-  fetchCheckOut = async () => {};
+  createCheckOut = async () => {
+    const checkout = await client.checkout.create();
+    localStorage.setItem("checkout_id", checkout.id);
+    this.setState({ checkout: checkout });
+  };
+
+  fetchCheckOut = (checkoutId) => {
+    client.checkout.fetch(checkoutId).then((checkout) => {
+      // Do something with the checkout
+      this.setState({ checkout: checkout });
+    });
+  };
+
   addItemToCheckout = async () => {};
 
   removeLineItem = async (lineItemIdsToRemove) => {};
 
   fetchAllProducts = async () => {
     // Fetch all products in your shop
-    client.product.fetchAll().then((products) => {
-      this.setState({ products: products });
-    });
+    const products = await client.product.fetchAll();
+    this.setState({ products: products });
+    // console.log(products);
   };
 
-  fetchProductWithHandle = async (handle) => {};
+  fetchProductWithHandle = async (handle) => {
+    const product = client.product.fetchByHandle(handle);
+    this.setState({ product: product });
+  };
 
   closeCart = () => {};
 
   openCart = () => {};
 
+  closeMenu = () => {};
+
   openMenu = () => {};
 
   render() {
-    return <ShopContext.Provider>{this.props.children}</ShopContext.Provider>;
+    // console.log(this.state.products);
+
+    return (
+      <ShopContext.Provider
+        value={{
+          ...this.setState,
+          fetchAllProducts: this.fetchAllProducts,
+          fetchProductWithHandle: this.fetchProductWithHandle,
+          addItemToCheckout: this.addItemToCheckout,
+          removeLineItem: this.removeLineItem,
+          closeCart: this.closeCart,
+          openCart: this.openCart,
+          closeMenu: this.closeMenu,
+          openMenu: this.openMenu,
+        }}
+      >
+        {this.props.children}
+      </ShopContext.Provider>
+    );
   }
 }
 
