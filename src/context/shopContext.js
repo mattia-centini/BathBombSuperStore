@@ -65,12 +65,12 @@ export class ShopProvider extends Component {
   openMenu = () => {};
 
   render() {
-    // console.log(this.state.products);
+    // console.log(this.state.checkout);
 
     return (
       <ShopContext.Provider
         value={{
-          ...this.setState,
+          ...this.state,
           fetchAllProducts: this.fetchAllProducts,
           fetchProductWithHandle: this.fetchProductWithHandle,
           addItemToCheckout: this.addItemToCheckout,
