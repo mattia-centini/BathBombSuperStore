@@ -2,12 +2,15 @@ import React from "react";
 import { Home, ProductPage } from "./pages/index";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import Cart from "./components/Cart";
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <p>Navigation</p>
+        <NavBar />
+        <Cart />
         <Switch>
           <Route path="/products/:handle">
             <ProductPage />
